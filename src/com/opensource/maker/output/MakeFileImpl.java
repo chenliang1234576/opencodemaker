@@ -22,6 +22,8 @@ public class MakeFileImpl implements MakeFile {
 	public boolean replacePage(String srcPath, String targetPath,
 			Map<String, String> map) {
 		// TODO Auto-generated method stub
+	    String  result = FileUtil.replaceFormFile(srcPath, map);   
+			  FileUtil.createFile(targetPath, result); 
 		return false;
 	}
 

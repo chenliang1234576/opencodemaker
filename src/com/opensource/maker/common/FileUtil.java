@@ -1,13 +1,17 @@
 package com.opensource.maker.common;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
@@ -245,5 +249,60 @@ public class FileUtil {
 	public static void moveFolder(String oldPath, String newPath) {
 		copyFolder(oldPath, newPath);
 		//removeFolder(oldPath);
+	}
+	
+	/***
+	 * 读取数据 
+	 * ***/
+	public static String loadFormFile(String filePath)
+	{  
+		String result = "";
+		StringBuffer sbf = new StringBuffer();
+		FileInputStream f;
+		try {  
+				f = new FileInputStream(filePath);
+				BufferedReader dr=new BufferedReader(new InputStreamReader(f));
+				String line =  "";
+				while((line = dr.readLine())!= null){ 
+							System.out.println("loadKeys-->" + line);   
+						    sbf.append(line);
+				}  
+				result = sbf.toString();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println("读取文件内容操作出错 ");
+			e.printStackTrace();
+		}  
+		return result;
+	}
+	
+	// 获取结果
+	public static String replaceFormFile(String filePath,Map<String, String> keyMap)
+	{  
+		String result = "";
+		StringBuffer sbf = new StringBuffer();
+		FileInputStream f;
+		try {  
+				f = new FileInputStream(filePath);
+				BufferedReader dr=new BufferedReader(new InputStreamReader(f));
+				String line =  "";
+				String key="",value = "";
+				while((line = dr.readLine())!= null){ 
+							   System.out.println("loadKeys-->" + line);   
+							   for (final Entry<String, String> entry : keyMap.entrySet()) 
+						        { 
+								     key = entry.getKey();
+								     value = entry.getValue();
+						             line = line.replace(key, value) ;
+						        }  
+						       sbf.append(line +"\n");
+				}  
+				result = sbf.toString();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println("读取文件内容操作出错 ");
+			e.printStackTrace();
+		}  
+		return result;
 	}
 }

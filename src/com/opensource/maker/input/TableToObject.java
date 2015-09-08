@@ -38,13 +38,13 @@ public class TableToObject{
     /***
      * 解析table中的数据
      * ***/
-    public  String parseTable(String tableName)
+    public  String parseTable(String tableName,String pkg)
     {
     	String result = "";
     	StringBuffer modelClass = new StringBuffer();
     	StringBuffer sb = new StringBuffer();
     	String className = NameParser.toModelName(tableName);
-    	modelClass.append("package  model;" );
+    	modelClass.append(pkg);
     	modelClass.append("\n\npublic class " + className +"{ \n\n " );
  //   	modelClass.append(+ className);
     	
@@ -68,14 +68,9 @@ public class TableToObject{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	result = modelClass.toString();
-    	
+    	result = modelClass.toString(); 
         log.debug(result);
     	return result;
     }
-    
-    
-   
-	
-	
+     
 }

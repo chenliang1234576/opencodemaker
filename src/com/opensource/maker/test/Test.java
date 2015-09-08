@@ -5,7 +5,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -17,6 +19,7 @@ import com.opensource.maker.common.PathUtil;
 import com.opensource.maker.common.db.DataSourceUtil;
 import com.opensource.maker.input.NameParser;
 import com.opensource.maker.input.TableToObject;
+import com.opensource.maker.output.TemplateReplaceTool;
 
 /***
  * ≤‚ ‘»Îø⁄
@@ -42,8 +45,23 @@ public class Test {
      */  
     public static void main(String[] args) {  
     	
-    	TableToObject tto =   TableToObject.getInstance();
-        tto.parseTable("txareas");
+    	String tableName = "txdate";
+    	String modelName = NameParser.toModelName(tableName);
+    	
+    	TemplateReplaceTool  tool = new TemplateReplaceTool();
+    	String outFile = "",tempFile="";
+    	
+    	tempFile = PathUtil.getTemplatePath() + "dao" + File.separator + "DaoTemplate.java";
+    	 outFile = PathUtil.getTargetPath() + "dao" + File.separator + modelName +"Dao.java";
+
+    	Map<String,String> keyMap = new HashMap<String,String>();
+    	keyMap.put("@model", modelName);
+    	keyMap.put("@mappingSpace", modelName+"Dao");
+    	 
+    	tool.replaceByKeymap(outFile, tempFile, keyMap);
+    	 
+    //	TableToObject tto =   TableToObject.getInstance();
+    //    tto.parseTable("txareas");
        // System.out.println("txareas_hello -->" + NameParser.toModelName("txareas_hello"));
   
 //    	Test test = new Test();

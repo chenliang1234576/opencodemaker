@@ -2,11 +2,14 @@ package com.opensource.maker.common;
 
 import java.sql.Connection;  
 import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement; 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.sql.DataSource;
 
@@ -136,5 +139,30 @@ public class BaseDao {
 		  } 
 		  return tmodels;
 	 }
+	 
+	 /***
+	  * ≤È—Ø∆¥Ω”
+	  * ***/
+	 public ResultSet queryJoin(final Map<String, Object> map) throws Exception 
+	  { 
+	        StringBuffer sql = new StringBuffer("select id,name,dept_id from users where 1=1 ");  
+	        for (final Entry<String, Object> entry : map.entrySet()) 
+	        { 
+	            sql.append(", ").append(entry.getKey()).append("=?"); 
+	        } 
+	       
+	        PreparedStatement    psmt = conn.prepareStatement(sql.toString()); 
+	       
+	        int i = 0; 
+	       
+	        for (final Entry<String, Object> entry : map.entrySet()) 
+	        { 
+	            psmt.setObject(i, entry.getValue()); 
+	            i++; 
+	        } 
+	        
+	      return     psmt.executeQuery();
+	    }
+	 
 	
 }
